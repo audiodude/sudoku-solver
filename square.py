@@ -20,9 +20,37 @@ class Square:
     classdocs
     '''
 
-
-    def __init__(self):
+    def __init__(self, x, y, groups, value=None):
         '''
         Constructor
         '''
+        self.x = x
+        self.y = y
         
+        if value:
+            self.value = [value]
+        else:
+            self.value = [1,2,3,4,5,6,7,8,9]
+        
+        self.groups = groups
+        
+    def update_groups(self):
+        if len(self.value) == 1:
+            val = self.value[0]
+            for gp in self.groups:
+                for sq in gp:
+                    if sq == self:
+                        continue
+                        
+                    if val in sq.value:
+                        sq.value.remove(val)
+                        if len(sq.value) == 0:
+                            raise Exception('Empty value array')
+                        if len(sq.value) == 1:
+                            sq.update_groups()
+            return True
+        else:
+            return False
+            
+    def __repr__(self):
+        return '%s:%s' % (self.x, self.y) 

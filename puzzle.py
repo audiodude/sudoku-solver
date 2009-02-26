@@ -16,7 +16,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from square import Square
+from math import ceil
+import pdb
 
+def wsquare(x, y):
+    if y > 8 or y < 0:
+        raise Exception('y value out of range: ' + str(y))
+    
+    if x > 8 or x < 0:
+        raise Exception('x value out of range: ' + str(x))
+        
+    if x in range(3):
+        if y in range(3):
+            return 0
+        elif y in range(3,6):
+            return 3
+        else:
+            return 6
+            
+    elif x in range(3,6):
+        if y in range(3):
+            return 1
+        elif y in range(3,6):
+            return 4
+        else:
+            return 7
+                
+    else:
+        if y in range(3):
+            return 2
+        elif y in range(3,6):
+            return 5
+        else:
+            return 8
+                   
 class Puzzle:
     '''
     classdocs
@@ -27,5 +60,66 @@ class Puzzle:
         '''
         Constructor
         '''
+        self.rows = [[] for i in range(9)]
+        self.cols = [[] for i in range(9)]
+        self.sqrs = [[] for i in range(9)]
         
+        y = 0
+        for row in text_array:
+            x = 0
+            for col in row:
+                if col.find('.') != -1:
+                    if len(col) == 2:
+                        try:
+                            for n in range(int(col[1:2])):
+                                self.create_square(x, y)
+                                x += 1
+                            continue
+                        except:
+                            raise Exception('Non-integer value following a period in puzzle specification')
+                    else:
+                        self.create_square(x, y)
+                else:
+                    self.create_square(x, y, int(col))
+                x += 1
+            y += 1
+    
+    def initial_update(self):
+        for row in self.rows:
+            for s in row:
+                s.update_groups()
                 
+    # def eliminate_singles(self):
+        # for grp in self.rows + self.cols + self.sqrs:
+            # nums = [[] for i in range(10)]
+            # for s in grp:
+                # if len(s.value) != 1:
+                    # for v in s.value:
+                        # nums[v].append(s)
+                    
+            # print nums
+            # for i, num in enumerate(nums):
+                # if len(num) == 1:
+                    # num[0].value = [i]
+                    # num[0].update_groups
+                
+    def print_values(self):
+        for row in self.rows:
+            for s in row:
+                print s.value,
+            print
+                
+    def create_square(self, x, y, val=None):
+        s = Square(x, y, [self.rows[y], self.cols[x], self.sqrs[wsquare(x,y)]], val)
+        self.rows[y].append(s)
+        self.cols[x].append(s)
+        self.sqrs[wsquare(x,y)].append(s)
+        
+    def printout(self):
+        for row in self.rows:
+          for s in row:
+             if len(s.value) == 1:
+               print s.value[0],
+             else:
+               print ".",
+          print 

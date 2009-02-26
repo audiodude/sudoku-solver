@@ -27,6 +27,15 @@ if __name__ == '__main__':
         f = open(sys.argv[1], "r")
         ans = []
         for l in f.readlines():
-          ans.append(l.rstrip().split(" "))
+            if l[0] != "#":
+                ans.append(l.rstrip().split(" "))
           
         pz = Puzzle(ans)
+        
+        pz.printout()
+        
+        pz.initial_update()
+        
+        print
+        print
+        pz.printout()

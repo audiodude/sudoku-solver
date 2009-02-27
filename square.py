@@ -15,6 +15,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+def eliminate_vals(grp, vals, excluding):
+    for sq in grp:
+        if sq in excluding:
+            continue
+        
+        for val in vals:
+            if val in sq.value:
+                sq.value.remove(val)
+                if len(sq.value) == 0:
+                    raise Exception('Empty value array')
+                if len(sq.value) == 1:
+                    sq.update_groups()
+
 class Square:
     '''
     classdocs
@@ -38,16 +51,7 @@ class Square:
         if len(self.value) == 1:
             val = self.value[0]
             for gp in self.groups:
-                for sq in gp:
-                    if sq == self:
-                        continue
-                    
-                    if val in sq.value:
-                        sq.value.remove(val)
-                        if len(sq.value) == 0:
-                            raise Exception('Empty value array')
-                        if len(sq.value) == 1:
-                            sq.update_groups()
+                eliminate_vals(gp, [val], [self])
             return True
         else:
             return False

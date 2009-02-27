@@ -89,19 +89,32 @@ class Puzzle:
             for s in row:
                 s.update_groups()
                 
-    # def eliminate_singles(self):
-        # for grp in self.rows + self.cols + self.sqrs:
-            # nums = [[] for i in range(10)]
-            # for s in grp:
-                # if len(s.value) != 1:
-                    # for v in s.value:
-                        # nums[v].append(s)
-                    
-            # print nums
-            # for i, num in enumerate(nums):
-                # if len(num) == 1:
-                    # num[0].value = [i]
-                    # num[0].update_groups
+    def eliminate_singles(self):
+        update = False
+        for grp in self.rows + self.cols + self.sqrs:
+            if self.finished():
+                return False
+            nums = [[] for i in range(10)]
+            for s in grp:
+                if len(s.value) != 1:
+                    for v in s.value:
+                        nums[v].append(s)
+
+            for i, num in enumerate(nums):
+                if len(num) == 1:
+                    update = True
+                    num[0].value = [i]
+                    num[0].update_groups()
+        
+        return update
+    
+    def finished(self):
+        for row in self.rows:
+            for s in row:
+                if len(s.value) > 1:
+                    return False
+        else:
+            return True
                 
     def print_values(self):
         for row in self.rows:

@@ -30,11 +30,12 @@ if __name__ == '__main__':
             if l[0] != "#":
                 ans.append(l.rstrip().split(" "))
           
-        pz = Puzzle(ans)
-        
+        pz = Puzzle(ans)     
         pz.printout()
         
         pz.initial_update()
+        while pz.eliminate_singles() and (not pz.finished()):
+            pass
         
         print
         print

@@ -41,7 +41,7 @@ class Square:
                 for sq in gp:
                     if sq == self:
                         continue
-                        
+                    
                     if val in sq.value:
                         sq.value.remove(val)
                         if len(sq.value) == 0:

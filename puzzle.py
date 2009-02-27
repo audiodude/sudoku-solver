@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from square import Square
+from square import Square, eliminate_vals
 from math import ceil
 import pdb
 
@@ -105,6 +105,26 @@ class Puzzle:
                     update = True
                     num[0].value = [i]
                     num[0].update_groups()
+        
+        return update
+    
+    def eliminate_doubles(self):
+        update = False
+        for grp in self.rows + self.cols + self.sqrs:
+            if self.finished():
+                return False
+            potentials = {}    
+            for sq in grp:
+                if len(sq.value) == 2:
+                    print "Found a double"
+                    val_tuple = (sq.value[0], sq.value[1])
+                    if val_tuple in potentials:
+                        print "### MATCHING DOUBLE ###"
+                        update = True
+                        eliminate_vals(grp, val_tuple, [sq, potentials[val_tuple]])
+                    else:
+                        potentials[val_tuple] = sq
+                    print potentials
         
         return update
     

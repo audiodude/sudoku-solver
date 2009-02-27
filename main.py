@@ -34,7 +34,7 @@ if __name__ == '__main__':
         pz.printout()
         
         pz.initial_update()
-        while pz.eliminate_singles() and (not pz.finished()):
+        while (pz.eliminate_singles() or pz.eliminate_doubles()) and (not pz.finished()):
             pass
         
         print
